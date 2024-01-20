@@ -23,6 +23,7 @@ jobs:
           # Configure git
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
+          git config pull.rebase false  # Explicitly set the merge strategy for pull
      
           git remote add gh-token "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"          
           
