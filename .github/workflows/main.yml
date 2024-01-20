@@ -55,7 +55,7 @@ jobs:
 
           # Push the changes to main
           git checkout main
-          git merge staging -x theirs
+          git merge staging -X theirs
           git push origin main
 
           # Switch back to staging and sync with main
