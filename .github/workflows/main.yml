@@ -27,10 +27,7 @@ jobs:
           # Checkout main and merge changes from staging
           git fetch --all
           git checkout origin/main
-          git merge staging --no-commit --no-ff
-
-          # If there are conflicts, favor changes from staging
-          git checkout --theirs .
+          git pull origin/staging -X theirs
 
           # Add all changes (including file renames)
           git add -A
