@@ -21,7 +21,7 @@ jobs:
         run: |
           repoStr=${{ github.repository }}
           repoName=${repoStr#*/}
-          git clone --single-branch --branch staging https://github.com/${{ github.actor }}/$(repoName}.git temp
+          git clone --single-branch --branch staging https://www.github.com/${{ github.actor }}/${repoName}.git temp
 
       - name: Move cloned files to main directory
         run: |
