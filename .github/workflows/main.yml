@@ -59,7 +59,7 @@ jobs:
           echo "2"
 
           # Push the squashed commit to main
-          git push origin main
+          git push main
 
           echo "3"
 
