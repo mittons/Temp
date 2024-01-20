@@ -52,6 +52,8 @@ jobs:
           commit_message="MERGE FROM STAGING: $latest_commit_message"
           git commit -m "$commit_message"
 
+          git push origin main
+
           echo "2"
 
           # Push the changes to main
