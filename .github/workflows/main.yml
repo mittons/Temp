@@ -46,10 +46,7 @@ jobs:
 
           # Add all changes (including file renames)
           git add -A
-
-          # Commit changes
-          latest_commit_message=$(git log -1 --pretty=%B)
-          commit_message="MERGE FROM STAGING: $latest_commit_message"
+          
           git commit -m "$commit_message"
 
           git push origin main
