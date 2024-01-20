@@ -47,15 +47,15 @@ jobs:
           # Add all changes (including file renames)
           git add -A
 
-          git commit -m "$commit_message"
+          #git commit -m "$commit_message"
 
-          git push origin staging
+          #git push origin staging
 
           echo "2"
 
           # Push the changes to main
           git checkout main
-          git merge staging
+          git merge staging -x theirs
           git push origin main
 
           # Switch back to staging and sync with main
