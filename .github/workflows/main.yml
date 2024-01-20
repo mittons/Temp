@@ -24,10 +24,12 @@ jobs:
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
      
+          git remote add gh-token "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"          
+          
           # Checkout main and merge changes from staging
           git fetch --all
           git checkout main
-          git pull staging -X theirs
+          git pull gh-token staging -X theirs
 
           # Add all changes (including file renames)
           git add -A
@@ -37,9 +39,9 @@ jobs:
           git commit -m "$commit_message"
 
           # Push the squashed commit to main
-          git push origin main
+          git push gh-token main
 
           # Go back to staging and merge the changes to keep it up to date
-          git checkout origin/staging
-          git merge origin main
-          git push origin staging
+          git checkout gh-token staging
+          git merge gh-token main
+          git push gh-token staging
