@@ -34,7 +34,7 @@ jobs:
           git checkout -b main origin/main  # Change 'origin' to the appropriate remote if necessary
 
           # Pull changes from staging, resolving conflicts by favoring changes from staging
-          git pull origin staging -X theirs  # Ensure the remote name is correct
+          git pull origin staging --allow-unrelated-histories -X theirs
 
           # Add all changes (including file renames)
           git add -A
