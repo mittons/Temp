@@ -38,13 +38,19 @@ jobs:
 
           # Add all changes (including file renames)
           git add -A
+
+          echo "1"
             
           # Create a squashed commit
           commit_message="Squash-like merge from staging: $(date +%Y-%m-%d)"
           git commit -m "$commit_message"
 
+          echo "2"
+
           # Push the squashed commit to main
           git push gh-token HEAD:main 
+
+          echo "3"
 
           # Go back to staging and merge the changes to keep it up to date
           git checkout gh-token staging
