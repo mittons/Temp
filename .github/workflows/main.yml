@@ -31,6 +31,9 @@ jobs:
 
       - name: Add all changes and commit
         run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+
           git add .
           git commit -m "Replace main contents with staging"
           git push origin main
