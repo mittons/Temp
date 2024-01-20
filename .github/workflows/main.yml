@@ -19,7 +19,9 @@ jobs:
 
       - name: Clone staging branch into temp directory
         run: |
-          git clone --single-branch --branch staging https://github.com/<username>/<repo>.git temp
+          repoStr=${{ github.repository }}
+          repoName=${repoStr#*/}
+          git clone --single-branch --branch staging https://github.com/${{ github.actor }}/$(repoName}.git temp
 
       - name: Move cloned files to main directory
         run: |
