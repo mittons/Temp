@@ -35,10 +35,12 @@ jobs:
           git fetch --all
 
           # Checkout the 'main' branch from the specified remote (e.g., 'origin/main')
-          git checkout -b main origin/main  # Change 'origin' to the appropriate remote if necessary
+          #git checkout -b main origin/main  # Change 'origin' to the appropriate remote if necessary
 
           # Pull changes from staging, resolving conflicts by favoring changes from staging
-          git pull origin staging --allow-unrelated-histories -X theirs
+          #git pull origin staging --allow-unrelated-histories -X theirs
+
+          git pull origin main --allow-unrelated-histories -X ours
 
           # Add all changes (including file renames)
           git add -A
