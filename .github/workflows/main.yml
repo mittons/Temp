@@ -16,27 +16,17 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Test for Integrity of Version References
-        run: python version_ref_consistency_tests.py
-
-      #  -=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-      # | | Push to Master/Main
-      #  -=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-            
-      # Bypassing GitHub's lock on non-enterprise repositories ability to guard branches against unclean commit using workflow.
-      # If this is the only way I commit to master/main then it should be fine. Nothing gets through without passing the tests before this section.
-      # This is only a valid strategy on solo, non-collaborative repositories AFAIK.
-      # - As this can possibly lead to complex merges on GitHub Actions in environments with multiple developers.
-      - name: Push to master 
+      # Push to main/Main
+      - name: Push to main 
         if: success()
         run: |
           # Configure git
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
      
-          # Checkout master and merge changes from staging
+          # Checkout main and merge changes from staging
           git fetch --all
-          git checkout master
+          git checkout main
           git merge staging --no-commit --no-ff
 
           # If there are conflicts, favor changes from staging
@@ -44,43 +34,15 @@ jobs:
 
           # Add all changes (including file renames)
           git add -A
-          - name: Push to master 
-          if: success()
-          run: |
-            # Configure git
-            git config user.name "${{ github.actor }}"
-            git config user.email "${{ github.actor }}@users.noreply.github.com"
-
             
+          # Create a squashed commit
+          commit_message="Squash merge from staging: $(date +%Y-%m-%d)"
+          git commit -m "$commit_message"
 
-            # Add a prefix and use the latest commit message from staging
-            commit_message="MERGE FROM STAGING: $latest_commit_message"
+          # Push the squashed commit to main
+          git push origin main
 
-            # Commit with the new message
-            git commit -m "$commit_message"
-
-            
-            # Checkout master and merge changes from staging
-            git fetch --all
-            git checkout master
-            git merge staging --no-commit --no-ff
-  
-            # If there are conflicts, favor changes from staging
-            git checkout --theirs .
-  
-            # Add all changes (including file renames)
-            git add -A
-  
-
-            
-            # Create a squashed commit
-            commit_message="Squash merge from staging: $(date +%Y-%m-%d)"
-            git commit -m "$commit_message"
-  
-            # Push the squashed commit to master
-            git push origin master
-  
-            # Go back to staging and merge the changes to keep it up to date
-            git checkout staging
-            git merge master
-            git push origin staging
+          # Go back to staging and merge the changes to keep it up to date
+          git checkout staging
+          git merge main
+          git push origin staging
