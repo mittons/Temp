@@ -4,61 +4,36 @@ on:
       - staging
 
 jobs:
-  test-version-refs:
+  replace-main-with-staging:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout code
+      - name: Checkout main branch
         uses: actions/checkout@v4
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          ref: 'main'
 
-      # Push to main/Main
-      - name: Push to main 
-        if: success()
+      - name: Remove all files in main
         run: |
-          # Configure git
+          sudo rm -rf *
 
-          latest_commit_message=$(git log -1 --pretty=%B)
-          commit_message="MERGE FROM STAGING: $latest_commit_message"
+      - name: Clone staging branch into temp directory
+        run: |
+          repoStr=${{ github.repository }}
+          repoName=${repoStr#*/}
+          git clone --single-branch --branch staging https://www.github.com/${{ github.actor }}/${repoName}.git temp
 
+      - name: Sync cloned files to main directory, excluding .git
+        run: |
+          rsync -av --exclude='.git' temp/ ./
+          rsync -av temp/.github/ .github/
+          rm -rf temp
+
+      - name: Add all changes and commit
+        run: |
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
-          git config pull.rebase false  # Explicitly set the merge strategy for pull
-     
-          #git remote add gh-token "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"          
-          
-          # Fetch all branches aaaa
-          git fetch --all
 
-          # Check if the 'staging' branch exists and switch to it, otherwise create it
-          if git show-ref --verify --quiet "refs/heads/staging"; then
-            git checkout staging
-          else
-            git checkout -b staging origin/staging
-          fi
-
-          # Merge changes from main into staging, resolving conflicts by favoring changes from main
-          git pull origin main --allow-unrelated-histories -X ours
-
-          # Add all changes (including file renames)
-          git add -A
-
-          #git commit -m "$commit_message"
-
-          #git push origin staging
-
-          echo "2"
-
-          # Push the changes to main
-          git checkout main
-          git merge staging -X theirs
+          git add .
+          git commit -m "Replace main contents with staging"
           git push origin main
-
-          # Switch back to staging and sync with main
-          git checkout staging
-          git merge main
-          git push origin staging
