@@ -31,7 +31,7 @@ jobs:
      
           #git remote add gh-token "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"          
           
-          # Fetch all branches
+          # Fetch all branches aaaa
           git fetch --all
 
           # Check if the 'staging' branch exists and switch to it, otherwise create it
