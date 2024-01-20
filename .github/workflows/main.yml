@@ -43,7 +43,9 @@ jobs:
           # Add all changes (including file renames)
           git add -A
 
-          echo "1"
+          echo "1" 
+        
+          dir
           
           git status
           
