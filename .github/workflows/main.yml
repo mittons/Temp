@@ -23,9 +23,10 @@ jobs:
           repoName=${repoStr#*/}
           git clone --single-branch --branch staging https://www.github.com/${{ github.actor }}/${repoName}.git temp
 
-      - name: Move cloned files to main directory
+      - name: Move cloned files to main directory, excluding .git
         run: |
-          mv temp/* temp/.[!.]* ./
+          shopt -s dotglob
+          mv temp/* ./
           rm -rf temp
 
       - name: Add all changes and commit
