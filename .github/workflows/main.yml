@@ -29,19 +29,19 @@ jobs:
           # Checkout main and merge changes from staging
           git fetch --all
           git checkout main
-          git pull gh-token staging -X theirs
+          git pull staging -X theirs
 
           # Add all changes (including file renames)
           git add -A
             
           # Create a squashed commit
-          commit_message="Squash merge from staging: $(date +%Y-%m-%d)"
+          commit_message="Squash-like merge from staging: $(date +%Y-%m-%d)"
           git commit -m "$commit_message"
 
           # Push the squashed commit to main
-          git push gh-token main
+          git push gh-token HEAD:main 
 
           # Go back to staging and merge the changes to keep it up to date
-          git checkout gh-token staging
-          git merge gh-token main
-          git push gh-token staging
+          git checkout staging
+          git merge main
+          git push staging
