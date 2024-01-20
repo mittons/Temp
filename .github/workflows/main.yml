@@ -34,8 +34,12 @@ jobs:
           # Fetch all branches
           git fetch --all
 
-          # Checkout a local staging branch that tracks origin/staging
-          git checkout -b staging origin/staging
+          # Check if the 'staging' branch exists and switch to it, otherwise create it
+          if git show-ref --verify --quiet "refs/heads/staging"; then
+            git checkout staging
+          else
+            git checkout -b staging origin/staging
+          fi
 
           # Merge changes from main into staging, resolving conflicts by favoring changes from main
           git pull origin main --allow-unrelated-histories -X ours
