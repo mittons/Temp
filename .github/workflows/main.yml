@@ -59,7 +59,7 @@ jobs:
           echo "2"
 
           # Push the squashed commit to main
-          git push gh-token HEAD:main 
+          git push origin main
 
           echo "3"
 
