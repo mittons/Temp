@@ -26,8 +26,8 @@ jobs:
      
           # Checkout main and merge changes from staging
           git fetch --all
-          git checkout origin nain
-          git pull origin staging -X theirs
+          git checkout main
+          git pull staging -X theirs
 
           # Add all changes (including file renames)
           git add -A
