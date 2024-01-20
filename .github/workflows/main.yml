@@ -21,6 +21,10 @@ jobs:
         if: success()
         run: |
           # Configure git
+
+          latest_commit_message=$(git log -1 --pretty=%B)
+          commit_message="MERGE FROM STAGING: $latest_commit_message"
+
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
           git config pull.rebase false  # Explicitly set the merge strategy for pull
@@ -42,7 +46,6 @@ jobs:
           echo "1"
             
           # Create a squashed commit
-          commit_message="Squash-like merge from staging: $(date +%Y-%m-%d)"
           git commit -m "$commit_message"
 
           echo "2"
