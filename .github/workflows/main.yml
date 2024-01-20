@@ -44,9 +44,13 @@ jobs:
           git add -A
 
           echo "1"
-            
+          
+          git status
+          
           # Create a squashed commit
           git commit -m "$commit_message"
+
+
 
           echo "2"
 
